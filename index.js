@@ -24,4 +24,4 @@ setupRepl();
 //instantiate client
 const Client = require("./lib/client");
 const client = new Client(config);
-client.login();
+client.connect();
