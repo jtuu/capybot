@@ -1,5 +1,4 @@
 var Plugin = require("../lib/plugin.js");
-var request = require("request");
 var jsdom = require("jsdom");
 
 
