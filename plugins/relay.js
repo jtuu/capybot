@@ -1,11 +1,16 @@
 var Plugin = require("../lib/plugin.js");
 
 function payload(src, msg, type){
-  if(type === "irc"){
-    this.sayTo("steam", src, msg);
-  }else{
-    this.sayTo("irc", src, msg);
+  if(type === "steam"){
+    this.getSteamUser(src).then(user => {
+      this.sayTo("irc", `${decorateNick(user.player_name)} ${msg}`);
+    })
+  }else if(type === "irc"){
+    this.sayTo("steam", `${decorateNick(src)} ${msg}`);
   }
+}
+function decorateNick(nick){
+  return `<${nick}>`;
 }
 
 module.exports = new Plugin("relay", "", payload);
