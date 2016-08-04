@@ -1,11 +1,11 @@
-const config = require("./config.default.json");
+const config = require("./config/client-config.default.json");
 
 //merge config file with defaults if exists
 try {
-	let configFile = require("./config.json");
+	let configFile = require("./config/client-config.json");
 	Object.assign(config, configFile);
 } catch (err) {
-	console.warn("Could not load config.json. Using default config.");
+	console.warn("Could not load client-config.json. Using default config.");
 }
 
 //a rudimentary REPL for debugging purposes
