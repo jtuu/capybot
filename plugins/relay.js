@@ -22,7 +22,7 @@ function initEvents() {
   this.irc.removeAllListeners(`part${this.channel}`);
   this.irc.removeAllListeners("quit");
 
-  this.steam.removeAllListeners("chatStateChange");
+  this.steam.friends.removeAllListeners("chatStateChange");
 
   var relayOnJoin = nick => {
 		this.sayTo("steam", `${nick} has joined ${this.channel}`)
