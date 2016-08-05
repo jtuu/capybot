@@ -21,6 +21,14 @@ function setupRepl() {
 }
 setupRepl();
 
+function shutdown(){
+	client.sayToBoth("Going down for maintenance");
+	setTimeout(() => {
+		client.disconnect();
+		setTimeout(process.exit, 1000);
+	}, 1000);
+}
+
 //instantiate client
 const Client = require("./lib/client");
 const client = new Client(config);

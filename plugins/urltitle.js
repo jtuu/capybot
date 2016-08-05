@@ -21,8 +21,8 @@ function payload(src, msg, type) {
 		if(CACHE.has(url)){
 			console.log("got title from cache")
 			let title = CACHE.get(url);
-			this.sayTo("steam", title);
-			this.sayTo("irc", parseTitle(title))
+			this.sayTo("steam", forSteam(title));
+			this.sayTo("irc", forIrc(title))
 		}else{
 			jsdom.env(url, [], (err, window) => {
 				if (err) return console.error(err);
@@ -39,16 +39,20 @@ function payload(src, msg, type) {
 					console.log("got title from dom")
 					title = title[0].textContent;
 					cache(url, title);
-		      this.sayTo("steam", title);
-					this.sayTo("irc", parseTitle(title))
+		      this.sayTo("steam", forSteam(title));
+					this.sayTo("irc", forIrc(title))
 		    }
 			})
 		}
 	}
 }
 
-function parseTitle(title){
+function forIrc(title){
 	return title.replace(newlineRegex, "").trim();
+}
+
+function forSteam(title){
+	return title.trim();
 }
 
 module.exports = new Plugin("urltitle", urlRegex, payload);
