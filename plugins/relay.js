@@ -1,9 +1,11 @@
-var Plugin = require("../lib/plugin.js");
-var defaultReason = require("../lib/utils").misc.defaultReason;
-var Steam = require("steam");
+const Plugin = require("../lib/plugin.js");
+const {defaultReason} = require("../lib/utils").misc;
+const Steam = require("steam");
 
 function payload(src, msg, type) {
-	initEvents.call(this);
+  if(!relay.init){
+    initEvents.call(this);
+  }
 	if (type === "steam") {
 		this.getSteamUser(src).then(user => {
 			this.sayTo("irc", `${decorateNick(user.player_name)} ${msg}`);
@@ -18,6 +20,8 @@ function decorateNick(nick) {
 }
 
 function initEvents() {
+  relay.init = true;
+
 	this.irc.removeAllListeners(`join${this.channel}`);
   this.irc.removeAllListeners(`part${this.channel}`);
   this.irc.removeAllListeners("quit");

@@ -39,4 +39,4 @@ jspm_packages
 
 # custom
 config/*
-!config/client-config.default.json
+!config/*.default.json

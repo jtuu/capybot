@@ -14,6 +14,7 @@
     "steam": "^1.4.0"
   },
   "optionalDependencies": {
-    "jsdom": "^9.4.1"
+    "jsdom": "^9.4.1",
+    "pg": "^6.0.3"
   }
 }

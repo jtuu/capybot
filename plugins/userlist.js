@@ -35,4 +35,4 @@ function ircUserToString(user){
   return str;
 }
 
-module.exports = new Plugin("userlist", "!userlist", payload, true, true);
+module.exports = new Plugin("userlist", /^!userlist/, payload, true, true);
