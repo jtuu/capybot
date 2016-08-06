@@ -30,7 +30,10 @@ function randomAnswer() {
 }
 
 function payload(src, msg, type) {
-	this.sayToBoth(`${prefix} ${randomAnswer()}`);
+	let message = `${prefix} ${randomAnswer()}`;
+	return new Promise(resolve => {
+		resolve(new Plugin.Response(message));
+	});
 }
 
-module.exports = new Plugin("8ball", /^!8ball/, payload);
+module.exports = new Plugin("8ball", /^!8ball/, payload, 5, true, false, true);

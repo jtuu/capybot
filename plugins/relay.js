@@ -6,13 +6,16 @@ function payload(src, msg, type) {
   if(!relay.init){
     initEvents.call(this);
   }
-	if (type === "steam") {
-		this.getSteamUser(src).then(user => {
-			this.sayTo("irc", `${decorateNick(user.player_name)} ${msg}`);
-		})
-	} else if (type === "irc") {
-		this.sayTo("steam", `${decorateNick(src)} ${msg}`);
-	}
+
+  return new Promise(resolve => {
+    if(type === "steam"){
+      this.getSteamUser(src).then(user => {
+        resolve(new Plugin.Response(`${decorateNick(user.player_name)} ${msg}`, false, true))
+      })
+    }else{
+      resolve(new Plugin.Response(`${decorateNick(src)} ${msg}`, true, false))
+    }
+  })
 }
 
 function decorateNick(nick) {
@@ -68,6 +71,8 @@ function initEvents() {
 						this.irc.say(this.channel, name + " was banned by " + user.player_name)
 					})
 					break;
+        default:
+          console.log("Unexpected chatStateChange: "+state)
 			}
 		})
 	};
@@ -75,5 +80,5 @@ function initEvents() {
 	this.steam.friends.on("chatStateChange", relayOnChatStateChange);
 }
 
-var relay = new Plugin("relay", "", payload);
+var relay = new Plugin("relay", "", payload, 1, true, false, true);
 module.exports = relay;

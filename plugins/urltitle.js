@@ -17,42 +17,41 @@ function cache(url, title){
 
 function payload(src, msg, type) {
 	let url = msg.match(urlRegex)[0];
-	if(url){
-		if(CACHE.has(url)){
-			console.log("got title from cache")
-			let title = CACHE.get(url);
-			this.sayTo("steam", forSteam(title));
-			this.sayTo("irc", forIrc(title))
-		}else{
-			jsdom.env(url, [], (err, window) => {
-				if (err) return console.error(err);
+	return new Promise((resolve, reject) => {
+		if(url){
+			if(CACHE.has(url)){
+				let title = CACHE.get(url);
 
-		    let title = null;
-		    if(
-		      window
-		      && window.document
-		      && (title = window.document.getElementsByTagName("title"))
-		      && title
-		      && Symbol.iterator in title
-		      && title[0]
-		    ){
-					console.log("got title from dom")
-					title = title[0].textContent;
-					cache(url, title);
-		      this.sayTo("steam", forSteam(title));
-					this.sayTo("irc", forIrc(title))
-		    }
-			})
+				resolve(new Plugin.Response(title));
+			}else{
+				jsdom.env(url, [], (err, window) => {
+					if (err) return reject(new Plugin.Response("bad url or something"));
+
+			    let title = null;
+			    if(
+			      window
+			      && window.document
+			      && (title = window.document.getElementsByTagName("title"))
+			      && title
+			      && Symbol.iterator in title
+			      && title[0]
+			    ){
+						title = title[0].textContent;
+						cache(url, title);
+			      resolve(new Plugin.Response(title));
+			    }else{
+						reject(new Plugin.Response("bad title or something"));
+					}
+				})
+			}
+		}else{
+			reject(new Plugin.Response("bad url or something"));
 		}
-	}
+	})
 }
 
-function forIrc(title){
+function parseTitle(title){
 	return title.replace(newlineRegex, "").trim();
 }
 
-function forSteam(title){
-	return title.trim();
-}
-
-module.exports = new Plugin("urltitle", urlRegex, payload);
+module.exports = new Plugin("urltitle", urlRegex, payload, true, false, true);

@@ -1,0 +1,10 @@
+{
+  "user": "johndoe",
+  "database": "mydb",
+  "password": "hunter2",
+  "host": "localhost",
+  "table": "quotes",
+  "port": 5432,
+  "max": 3,
+  "idleTimeoutMillis": 30000
+}
