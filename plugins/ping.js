@@ -6,4 +6,6 @@ function payload(src, msg, type){
   })
 }
 
-module.exports = new Plugin("ping", "!ping", payload, 5, true, true, true);
+const desc = "Responds with 'pong'.";
+
+module.exports = new Plugin("ping", "!ping", payload, desc, 5, true, true, true);

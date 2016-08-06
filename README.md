@@ -3,6 +3,8 @@ A chat bot
 
 ***
 
+> # Disclaimer: the information in this document is outdated
+
 ## Features
 * Steam and IRC connectivity
 * Plugin API and hotloading

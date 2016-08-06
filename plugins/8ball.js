@@ -36,4 +36,6 @@ function payload(src, msg, type) {
 	});
 }
 
-module.exports = new Plugin("8ball", /^!8ball/, payload, 5, true, false, true);
+const desc = "Responds to a yes or no question,";
+
+module.exports = new Plugin("8ball", /^!8ball/, payload, desc, 5, true, false, true);

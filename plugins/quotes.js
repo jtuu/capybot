@@ -68,4 +68,6 @@ function payload(src, msg, type) {
 
 }
 
-module.exports = new Plugin("quotes", /^!quote/, payload, 5, true, false, true);
+const desc = "Returns a random message from a database (Postgres). Can take in a regex pattern as an argument. The pattern is used to limit the search to only messages that contain that pattern.";
+
+module.exports = new Plugin("quotes", /^!quote/, payload, desc, 5, true, false, true);

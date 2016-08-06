@@ -32,4 +32,6 @@ function payload(src, msg, type){
   }
 }
 
-module.exports = new Plugin("logger", "", payload);
+const desc = "Saves messages to a database (Postgres).";
+
+module.exports = new Plugin("logger", "", payload, desc);

@@ -54,4 +54,6 @@ function parseTitle(title){
 	return title.replace(newlineRegex, "").trim();
 }
 
-module.exports = new Plugin("urltitle", urlRegex, payload, true, false, true);
+const desc = "Fetches the contents of the `<title>` tag of any website";
+
+module.exports = new Plugin("urltitle", urlRegex, payload, desc, true, false, true);

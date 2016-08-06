@@ -80,5 +80,7 @@ function initEvents() {
 	this.steam.friends.on("chatStateChange", relayOnChatStateChange);
 }
 
-var relay = new Plugin("relay", "", payload, 1, true, false, true);
+const desc = "Relays messages and actions (joins, parts, quits, kicks, bans) between IRC and Steam.";
+
+var relay = new Plugin("relay", "", payload, desc, 1, true, false, true);
 module.exports = relay;

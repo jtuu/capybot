@@ -35,4 +35,6 @@ function ircUserToString(user){
   return str;
 }
 
-module.exports = new Plugin("userlist", /^!userlist/, payload, 9, true, true);
+const desc = "Makes the bot whisper you with a list of all the users that are on the other side of the chat.";
+
+module.exports = new Plugin("userlist", /^!userlist/, payload, desc, 9, true, true);
