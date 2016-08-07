@@ -22,7 +22,7 @@ function payload(src, msg, type) {
 			if(CACHE.has(url)){
 				let title = CACHE.get(url);
 
-				resolve(new Plugin.Response(title));
+				resolve(new Plugin.Response(parseTitle(title)));
 			}else{
 				jsdom.env(url, [], (err, window) => {
 					if (err) return reject(new Plugin.Response("bad url or something"));
@@ -38,7 +38,7 @@ function payload(src, msg, type) {
 			    ){
 						title = title[0].textContent;
 						cache(url, title);
-			      resolve(new Plugin.Response(title));
+			      resolve(new Plugin.Response(parseTitle(title)));
 			    }else{
 						reject(new Plugin.Response("bad title or something"));
 					}

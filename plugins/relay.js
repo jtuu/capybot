@@ -2,6 +2,10 @@ const Plugin = require("../lib/plugin.js");
 const {defaultReason} = require("../lib/utils").misc;
 const Steam = require("steam");
 
+const colors = [2,3,4,5,6,7,9,10,11,12,13];
+const colorChar = "\x03";
+const endChar = "\x0f";
+
 function payload(src, msg, type) {
   if(!relay.init){
     initEvents.call(this);
@@ -10,16 +14,24 @@ function payload(src, msg, type) {
   return new Promise(resolve => {
     if(type === "steam"){
       this.getSteamUser(src).then(user => {
-        resolve(new Plugin.Response(`${decorateNick(user.player_name)} ${msg}`, false, true))
+        resolve(new Plugin.Response(`${decorateNick(user.player_name, true)} ${msg}`, false, true))
       })
     }else{
-      resolve(new Plugin.Response(`${decorateNick(src)} ${msg}`, true, false))
+      resolve(new Plugin.Response(`${decorateNick(src, false)} ${msg}`, true, false))
     }
   })
 }
 
-function decorateNick(nick) {
+function decorateNick(nick, color) {
+  if(color){
+    nick = colorNick(nick);
+  }
 	return `<${nick}>`;
+}
+
+function colorNick(nick){
+  let color = colors[nick.split("").reduce((p, c) => String(p.charCodeAt(0) + c.charCodeAt(0)), "\x00") % colors.length];
+	return colorChar + color + nick + endChar;
 }
 
 var relayOnJoin = function(nick){
