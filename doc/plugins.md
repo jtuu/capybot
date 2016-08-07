@@ -3,6 +3,7 @@
 A document explaining the behaviour of the following built-in plugins:
 
 * [8ball](#8ball)
+* [autoop](#autoop)
 * [help](#help)
 * [logger](#logger)
 * [noop](#noop)
@@ -20,6 +21,15 @@ A document explaining the behaviour of the following built-in plugins:
 * **private:** false
 
 Responds to a yes or no question,
+
+
+## autoop
+
+* **trigger:** any
+* **public:** true
+* **private:** false
+
+Sets +o for specified users when they join.
 
 
 ## help
@@ -88,8 +98,8 @@ Relays messages and actions (joins, parts, quits, kicks, bans) between IRC and S
 ## urltitle
 
 * **trigger:** `/(https?:\/\/\S+)/`
-* **public:** false
-* **private:** true
+* **public:** true
+* **private:** false
 
 Fetches the contents of the `<title>` tag of any website
 
