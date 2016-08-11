@@ -1,11 +1,16 @@
 const Plugin = require("../lib/plugin.js");
+const http = require("http");
+const https = require("https");
 const jsdom = require("jsdom");
 
-const urlRegex = /(https?:\/\/\S+)/;
+const urlRegex = /(http(s)?:\/\/\S+)/;
 const newlineRegex = /\r?\n|\r/g;
+const contentTypeRegex = /text\/(?:ht|x)ml/;
 
 const CACHE = new Map();
 const cacheSize = 2;
+
+const requestTimeoutMillis = 50000;
 
 function cache(url, title){
 	CACHE.set(url, title);
@@ -21,28 +26,68 @@ function payload(src, msg, type) {
 		if(url){
 			if(CACHE.has(url)){
 				let title = CACHE.get(url);
-
 				resolve(new Plugin.Response(parseTitle(title)));
 			}else{
-				jsdom.env(url, [], (err, window) => {
-					if (err) return reject(new Plugin.Response("bad url or something"));
+				let client = http;
+				if(url.startsWith("https")){
+					client = https;
+				}
+				let request = client.get(url, res => {
+					res.setEncoding("utf8");
 
-			    let title = null;
-			    if(
-			      window
-			      && window.document
-			      && (title = window.document.getElementsByTagName("title"))
-			      && title
-			      && Symbol.iterator in title
-			      && title[0]
-			    ){
-						title = title[0].textContent;
-						cache(url, title);
-			      resolve(new Plugin.Response(parseTitle(title)));
-			    }else{
-						reject(new Plugin.Response("bad title or something"));
+					res.on("error", console.error)
+
+					if(
+						res.headers
+						&& res.headers["content-type"]
+						&& contentTypeRegex.test(res.headers["content-type"])
+					){
+						res.on("data", data => {
+							let request = jsdom.env({
+								html: data,
+								features: {
+									SkipExternalResources: true,
+									ProcessExternalResources: false,
+									FetchExternalResources: false
+								},
+								parsingMode: "html",
+								done: (err, window) => {
+									if (err) return reject(new Plugin.Response("bad url or something"));
+
+							    let title = null;
+									if(window){
+										if(
+											window.document
+								      && (title = window.document.getElementsByTagName("title"))
+								      && title
+								      && Symbol.iterator in title
+								      && title[0]
+								    ){
+											title = title[0].textContent;
+											cache(url, title);
+								      resolve(new Plugin.Response(parseTitle(title)));
+								    }else{
+											reject(new Plugin.Response("bad title or something"));
+										}
+										return window.close();
+									}else{
+										reject(new Plugin.Response("bad title or something"));
+									}
+								}
+							})
+						})
+					}else{
+						request.abort();
+						reject(new Plugin.Response("invalid content-type"));
 					}
-				})
+				});
+				request.on("error", err => {
+					request.abort();
+					reject(new Plugin.Response(err));
+				});
+				request.setTimeout(requestTimeoutMillis, () => {
+					reject(new Plugin.Response("request timed out"))
+				});
 			}
 		}else{
 			reject(new Plugin.Response("bad url or something"));
@@ -54,6 +99,6 @@ function parseTitle(title){
 	return title.replace(newlineRegex, "").trim();
 }
 
-const desc = "Fetches the contents of the `<title>` tag of any website";
+const desc = "Fetches the title of websites.";
 
 module.exports = new Plugin("urltitle", urlRegex, payload, desc, 5, true, false, true);
