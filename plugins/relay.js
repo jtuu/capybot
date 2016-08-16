@@ -84,7 +84,7 @@ function initEvents() {
 	relay.init = true;
 
 	this.irc.removeListener("join" + this.channel, this.relayOnJoin || noop);
-	this.irc.removeListener("part", this.relayOnPart || noop);
+	this.irc.removeListener("part" + this.channel, this.relayOnPart || noop);
 	this.irc.removeListener("quit", this.relayOnQuit || noop);
 	this.steam.friends.removeListener("chatStateChange", this.relayOnChatStateChange || noop);
 
@@ -94,7 +94,7 @@ function initEvents() {
 	this.relayOnChatStateChange = relayOnChatStateChange.bind(this);
 
 	this.irc.on("join" + this.channel, this.relayOnJoin);
-	this.irc.on("part", this.relayOnPart);
+	this.irc.on("part" + this.channel, this.relayOnPart);
 	this.irc.on("quit", this.relayOnQuit);
 	this.steam.friends.on("chatStateChange", this.relayOnChatStateChange);
 }

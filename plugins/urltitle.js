@@ -4,18 +4,18 @@ const https = require("https");
 const jsdom = require("jsdom");
 
 const urlRegex = /(http(s)?:\/\/\S+)/;
-const newlineRegex = /\r?\n|\r/g;
 const contentTypeRegex = /text\/(?:ht|x)ml/;
+const {newlineRegex} = require("../lib/utils").misc;
 
 const CACHE = new Map();
 const cacheSize = 2;
 
 const requestTimeoutMillis = 50000;
 
-function cache(url, title){
+function cache(url, title) {
 	CACHE.set(url, title);
 
-	if(CACHE.size > cacheSize){
+	if (CACHE.size > cacheSize) {
 		CACHE.delete(CACHE.keys().next().value);
 	}
 }
@@ -23,13 +23,13 @@ function cache(url, title){
 function payload(src, msg, type) {
 	let url = msg.match(urlRegex)[0];
 	return new Promise((resolve, reject) => {
-		if(url){
-			if(CACHE.has(url)){
+		if (url) {
+			if (CACHE.has(url)) {
 				let title = CACHE.get(url);
 				resolve(new Plugin.Response(parseTitle(title)));
-			}else{
+			} else {
 				let client = http;
-				if(url.startsWith("https")){
+				if (url.startsWith("https")) {
 					client = https;
 				}
 				let request = client.get(url, res => {
@@ -37,14 +37,19 @@ function payload(src, msg, type) {
 
 					res.on("error", console.error)
 
-					if(
-						res.headers
-						&& res.headers["content-type"]
-						&& contentTypeRegex.test(res.headers["content-type"])
-					){
+					let html = "";
+					if (
+						res.headers &&
+						res.headers["content-type"] &&
+						contentTypeRegex.test(res.headers["content-type"])
+					) {
 						res.on("data", data => {
+							html += data;
+						})
+
+						res.on("end", () => {
 							let request = jsdom.env({
-								html: data,
+								html,
 								features: {
 									SkipExternalResources: true,
 									ProcessExternalResources: false,
@@ -52,31 +57,37 @@ function payload(src, msg, type) {
 								},
 								parsingMode: "html",
 								done: (err, window) => {
+
 									if (err) return reject(new Plugin.Response("bad url or something"));
 
-							    let title = null;
-									if(window){
-										if(
-											window.document
-								      && (title = window.document.getElementsByTagName("title"))
-								      && title
-								      && Symbol.iterator in title
-								      && title[0]
-								    ){
-											title = title[0].textContent;
-											cache(url, title);
-								      resolve(new Plugin.Response(parseTitle(title)));
-								    }else{
+									let titleElem = null,
+										titleText = null;
+									if (window) {
+										if (
+											window.document &&
+											(
+												(titleElem = window.document.getElementsByTagName("title")[0]) ||
+												(titleElem = window.document.querySelector("meta[property='og:title']"))
+											) &&
+											titleElem &&
+											(
+												(titleText = titleElem.textContent) ||
+												(titleText = titleElem.content)
+											)
+										) {
+											cache(url, titleText);
+											resolve(new Plugin.Response(parseTitle(titleText)));
+										} else {
 											reject(new Plugin.Response("bad title or something"));
 										}
 										return window.close();
-									}else{
+									} else {
 										reject(new Plugin.Response("bad title or something"));
 									}
 								}
 							})
 						})
-					}else{
+					} else {
 						request.abort();
 						reject(new Plugin.Response("invalid content-type"));
 					}
@@ -89,14 +100,17 @@ function payload(src, msg, type) {
 					reject(new Plugin.Response("request timed out"))
 				});
 			}
-		}else{
+		} else {
 			reject(new Plugin.Response("bad url or something"));
 		}
 	})
 }
 
-function parseTitle(title){
-	return title.replace(newlineRegex, "").trim();
+function parseTitle(title) {
+	return {
+		steam: title.replace(newlineRegex, "").trim(),
+		irc: title.replace(newlineRegex, "").trim()
+	}
 }
 
 const desc = "Fetches the title of websites.";

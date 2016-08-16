@@ -13,7 +13,7 @@ const pool = new pg.Pool(config);
 
 const queryString = `insert into ${config.table} (username, message, channel, type) values ($1, $2, $3, $4)`;
 
-const ignore = [/^!quote/, /^!8ball$/, /^!rejoin/];
+const ignore = [/^!quote/, /^!8ball$/, /^!rejoin/, /^!fortune/];
 
 function log(user, msg, channel, type){
   pool.query(queryString, [user, msg, channel, type]);
