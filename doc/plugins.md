@@ -4,6 +4,10 @@ A document explaining the behaviour of the following built-in plugins:
 
 * [8ball](#8ball)
 * [autoop](#autoop)
+* [decide](#decide)
+* [dice](#dice)
+* [fortune](#fortune)
+* [google](#google)
 * [help](#help)
 * [logger](#logger)
 * [noop](#noop)
@@ -30,6 +34,42 @@ Responds to a yes or no question,
 * **private:** false
 
 Sets +o for specified users when they join.
+
+
+## decide
+
+* **trigger:** `/^!decide\s(?!.*or\sor).+?\sor\s(?!.*or).+/`
+* **public:** true
+* **private:** false
+
+
+
+
+## dice
+
+* **trigger:** `/^!dice\s\d+d\d/`
+* **public:** true
+* **private:** false
+
+Roll dice.
+
+
+## fortune
+
+* **trigger:** `/^!fortune/`
+* **public:** true
+* **private:** false
+
+Prints a random epigram.
+
+
+## google
+
+* **trigger:** `/^!g/`
+* **public:** true
+* **private:** false
+
+Does a Google search.
 
 
 ## help
@@ -97,11 +137,11 @@ Relays messages and actions (joins, parts, quits, kicks, bans) between IRC and S
 
 ## urltitle
 
-* **trigger:** `/(https?:\/\/\S+)/`
+* **trigger:** `/(http(s)?:\/\/\S+)/`
 * **public:** true
 * **private:** false
 
-Fetches the contents of the `<title>` tag of any website
+Fetches the title of websites.
 
 
 ## userlist
