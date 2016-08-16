@@ -10,6 +10,7 @@ A document explaining the behaviour of the following built-in plugins:
 * [google](#google)
 * [help](#help)
 * [logger](#logger)
+* [moderate](#moderate)
 * [noop](#noop)
 * [ping](#ping)
 * [quotes](#quotes)
@@ -90,6 +91,15 @@ Returns a link to this document.
 Saves messages to a database (Postgres).
 
 
+## moderate
+
+* **trigger:** `/^!(?:(k)(?:ick)?(b)(?:an)?|(k)(?:ick)?|(b)(?:an)?|(u)(?:n)?(b)(?:an)?)\b/`
+* **public:** true
+* **private:** false
+
+Kick or ban users.
+
+
 ## noop
 
 * **trigger:** `/$./`
@@ -132,7 +142,7 @@ Makes the bot leave and rejoin Steam chat.
 * **public:** true
 * **private:** false
 
-Relays messages and actions (joins, parts, quits, kicks, bans) between IRC and Steam.
+Relays messages and actions (joins, parts, quits, kicks, bans etc.) between IRC and Steam.
 
 
 ## urltitle
