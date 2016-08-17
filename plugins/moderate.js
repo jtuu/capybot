@@ -4,7 +4,7 @@ const {
 	defaultReason
 } = require("../lib/utils").misc;
 
-const trigger = /^!(?:(k)(?:ick)?(b)(?:an)?|(k)(?:ick)?|(b)(?:an)?|(u)(?:n)?(b)(?:an)?)\b/;
+const trigger = /^!(?:(k)(?:ick)?(b)(?:an)?|(k)(?:ick)?|(b)(?:an)?|(u)(?:n)?(b)(?:an)?|(o)(?:p|per)?)\b/;
 
 function payload(src, msg, type) {
 	let action = msg.match(trigger).slice(1).join("");
@@ -25,6 +25,9 @@ function payload(src, msg, type) {
 					break;
 				case "ub":
 					unban.call(this, src, target, reason, type);
+					break;
+				case "o":
+					oper.call(this, src, target, reason, type);
 					break;
 				default:
 					console.log("Unexpected input");
@@ -99,6 +102,17 @@ function unban(actor, target, reason = defaultReason, type){
 					.forEach(id => this.steam.friends.unban(this.room_id, id));
 			}
 		})
+	}
+}
+
+function oper(actor, target, reason = defaultReason, type){
+	if(type === "steam"){
+		let {
+			permissions
+		} = this.steam.friends.chatRooms[this.room_id][actor];
+		if (permissions & steamPerms.OfficerDefault) {
+			this.irc.send("mode", this.channel, "+o", target);
+		}
 	}
 }
 
