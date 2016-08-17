@@ -52,7 +52,7 @@ function payload(src, msg, type) {
 								return reject(new Plugin.Response("error when parsing JSON: " + commitBody));
 							}
 
-							const commitMsg = parsedBody.message.replace(newlineRegex, "").trim();
+							const commitMsg = parsedBody.message.replace(newlineRegex, " ").trim();
 
 							return resolve(new Plugin.Response(`Latest changes to ${repo}: "${commitMsg}". ${repo.charAt(0).toUpperCase() + repo.slice(1)} is made by ${dn}. https://github.com/${user}/${repo}`));
 						})
