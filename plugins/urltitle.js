@@ -115,7 +115,7 @@ function payload(src, msg, type) {
 											) {
 												//we got the title, cache and send it off
 												cache(url, titleText);
-												return resolve(new Plugin.Response(parseTitle("\x02" + titleText)));
+												return resolve(new Plugin.Response("\x02" + parseTitle(titleText)));
 											} else {
 												return reject(new Plugin.Response("could not find title in document"));
 											}
