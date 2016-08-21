@@ -15,8 +15,10 @@ var randomQuoteQuery = `
 with x as (
   select * from ${config.table}
     where message ~ $1
+		and msgtype = 'message'
 )
 select x.username, x.message from x
+	where msgtype = 'message'
   offset
     floor(random() * (select count(*) from x))
   limit 1

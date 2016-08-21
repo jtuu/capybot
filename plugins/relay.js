@@ -49,7 +49,7 @@ var relayOnQuit = function(nick, reason = defaultReason, channels, raw) {
 	this.sayTo("steam", `${formatUser(raw)} has quit [${reason}]`)
 };
 
-var relayOnPart = function(channel, nick, reason = defaultReason) {
+var relayOnPart = function(channel, nick, reason = defaultReason, raw) {
 	this.sayTo("steam", `${formatUser(raw)} has left ${channel} [${reason}]`)
 };
 
@@ -119,6 +119,7 @@ function initEvents() {
 	this.irc.removeListener("action", this.relayOnAction || noopFn);
 	this.irc.removeListener("topic", this.relayOnTopic || noopFn);
 	this.irc.removeListener("kick" + this.channel, this.relayOnKick || noopFn);
+	this.irc.removeListener("kill", this.relayOnKill || noopFn);
 	this.steam.friends.removeListener("chatStateChange", this.relayOnChatStateChange || noopFn);
 
 	this.relayOnJoin = relayOnJoin.bind(this, this.channel);
@@ -130,6 +131,7 @@ function initEvents() {
 	this.relayOnAction = relayOnAction.bind(this);
 	this.relayOnTopic = relayOnTopic.bind(this);
 	this.relayOnKick = relayOnKick.bind(this, this.channel);
+	this.relayOnKill = relayOnKill.bind(this);
 	this.relayOnChatStateChange = relayOnChatStateChange.bind(this);
 
 	this.irc.on("join" + this.channel, this.relayOnJoin);
@@ -141,6 +143,7 @@ function initEvents() {
 	this.irc.on("action", this.relayOnAction);
 	this.irc.on("topic", this.relayOnTopic);
 	this.irc.on("kick" + this.channel, this.relayOnKick);
+	this.irc.on("kill", this.relayOnKill);
 	this.steam.friends.on("chatStateChange", this.relayOnChatStateChange);
 }
 
