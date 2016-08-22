@@ -14,11 +14,11 @@ var pool = new pg.Pool(config);
 var randomQuoteQuery = `
 with x as (
   select * from ${config.table}
-    where message ~ $1
+    where message ~* $1
 		and msgtype = 'message'
+		and message !~ '(^|: )!\\w+'
 )
 select x.username, x.message from x
-	where msgtype = 'message'
   offset
     floor(random() * (select count(*) from x))
   limit 1

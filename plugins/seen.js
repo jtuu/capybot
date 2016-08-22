@@ -29,7 +29,7 @@ function payload(src, msg, type) {
 	})
 }
 
-const desc = "Returns the last time a user was seen.";
+const desc = "Returns the date a user was last seen.";
 const seenPlugin = new Plugin("seen", /^!seen/, payload, desc, 5, true, false, true);
 
 seenPlugin.loadConfig();
@@ -39,7 +39,7 @@ const seenQuery = `
   select username, message, date, msgfrom, msgtype
     from ${seenPlugin.config.table}
     where username ilike $1
-    order by date
+    order by date desc
     limit 1
 `;
 
