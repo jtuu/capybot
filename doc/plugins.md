@@ -4,6 +4,8 @@ A document explaining the behaviour of the following built-in plugins:
 
 * [8ball](#8ball)
 * [autoop](#autoop)
+* [capybot](#capybot)
+* [cleverbot](#cleverbot)
 * [decide](#decide)
 * [dice](#dice)
 * [fortune](#fortune)
@@ -16,6 +18,8 @@ A document explaining the behaviour of the following built-in plugins:
 * [quotes](#quotes)
 * [rejoin](#rejoin)
 * [relay](#relay)
+* [seen](#seen)
+* [translate](#translate)
 * [urltitle](#urltitle)
 * [userlist](#userlist)
 
@@ -35,6 +39,24 @@ Responds to a yes or no question,
 * **private:** false
 
 Sets +o for specified users when they join.
+
+
+## capybot
+
+* **trigger:** `/^!(?:capy)?bot/`
+* **public:** true
+* **private:** false
+
+Returns information about the capybot repo on GitHub.
+
+
+## cleverbot
+
+* **trigger:** `/^!cb/`
+* **public:** true
+* **private:** false
+
+Chat with Cleverbot.
 
 
 ## decide
@@ -88,12 +110,12 @@ Returns a link to this document.
 * **public:** true
 * **private:** false
 
-Saves messages to a database (Postgres).
+Logs activity to a database.
 
 
 ## moderate
 
-* **trigger:** `/^!(?:(k)(?:ick)?(b)(?:an)?|(k)(?:ick)?|(b)(?:an)?|(u)(?:n)?(b)(?:an)?)\b/`
+* **trigger:** `/^!(?:(k)(?:ick)?(b)(?:an)?|(k)(?:ick)?|(b)(?:an)?|(u)(?:n)?(b)(?:an)?|(o)(?:p|per)?)\b/`
 * **public:** true
 * **private:** false
 
@@ -143,6 +165,24 @@ Makes the bot leave and rejoin Steam chat.
 * **private:** false
 
 Relays messages and actions (joins, parts, quits, kicks, bans etc.) between IRC and Steam.
+
+
+## seen
+
+* **trigger:** `/^!seen/`
+* **public:** true
+* **private:** false
+
+Returns the date a user was last seen.
+
+
+## translate
+
+* **trigger:** `/^!translate/`
+* **public:** true
+* **private:** false
+
+Google Translate
 
 
 ## urltitle
