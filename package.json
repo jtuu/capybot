@@ -15,7 +15,7 @@
     "steam": "^1.4.0"
   },
   "optionalDependencies": {
-    "cleverbot.io": "^1.0.4",
+    "cleverbot-node": "^0.2.2",
     "iconv-lite": "^0.4.13",
     "jsdom": "^9.4.1",
     "moment": "^2.14.1",
