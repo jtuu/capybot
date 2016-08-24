@@ -1,6 +1,7 @@
 const Plugin = require("../lib/plugin.js");
 const https = require("https");
 
+const querify = require("../lib/utils").misc.querify;
 const baseUrl = "https://www.googleapis.com/customsearch/v1";
 const requestTimeoutMillis = 50000;
 
@@ -78,12 +79,6 @@ function formatResult(result) {
 			}\n\t${item.link}`
 		}, "")
 	};
-}
-
-function querify(o) {
-	return "?" + Object.keys(o).reduce((stack, key) => {
-		return stack += `${key}=${encodeURIComponent(o[key])}&`;
-	}, "")
 }
 
 const desc = "Does a Google search.";
