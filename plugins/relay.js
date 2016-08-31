@@ -1,7 +1,8 @@
 const Plugin = require("../lib/plugin.js");
 const {
 	defaultReason,
-	noopFn
+	noopFn,
+	newlineRegex
 } = require("../lib/utils").misc;
 const Steam = require("steam");
 
@@ -17,7 +18,8 @@ function payload(src, msg, type) {
 	return new Promise(resolve => {
 		if (type === "steam") {
 			this.getSteamUser(src).then(user => {
-				resolve(new Plugin.Response(`${decorateNick(user.player_name, true)} ${msg}`, false, true))
+				let nick = decorateNick(user.player_name, true);
+				resolve(new Plugin.Response(`${nick} ${msg.replace(newlineRegex, `\n${nick} `)}`, false, true))
 			})
 		} else {
 			resolve(new Plugin.Response(`${decorateNick(src, false)} ${msg}`, true, false))

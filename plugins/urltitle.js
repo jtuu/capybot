@@ -31,8 +31,8 @@ function cache(url, title) {
 	}
 }
 
-function encodeUrl(url){
-	if(url === decodeURI(url)){
+function encodeUrl(url) {
+	if (url === decodeURI(url)) {
 		url = encodeURI(url);
 	}
 	return url;
@@ -128,24 +128,11 @@ function payload(src, msg, type) {
 					done: (err, window) => {
 						if (err) return reject(new Plugin.Response(err));
 
-						let titleElem = null,
-							titleText = null;
-
 						if (window) {
-							if (
-								window.document &&
-								(
-									(titleElem = window.document.getElementsByTagName("title")[0]) ||
-									(titleElem = window.document.querySelector("meta[property='og:title']"))
-								) &&
-								titleElem &&
-								(
-									(titleText = titleElem.textContent) ||
-									(titleText = titleElem.content)
-								)
-							) {
-								cache(url, titleText);
-								return resolve(new Plugin.Response(parseTitle(titleText)));
+							const title = getTitle(window.document);
+							if (title) {
+								cache(url, title);
+								return resolve(new Plugin.Response(parseTitle(title)));
 							} else {
 								return reject(new Plugin.Response("could not find title in document"));
 							}
@@ -171,6 +158,27 @@ function parseTitle(title) {
 	return {
 		steam: title.replace(newlineRegex, "").trim(),
 		irc: "\x02" + title.replace(newlineRegex, "").trim()
+	}
+}
+
+function getTitle(doc) {
+	let titleElem = null,
+		titleText = null;
+	if (
+		(
+			(titleElem = doc.getElementsByTagName("title")[0]) ||
+			(titleElem = doc.querySelector("meta[property='og:title']")) ||
+			(titleElem = doc.querySelector("meta[name='title']"))
+		) &&
+		titleElem &&
+		(
+			(titleText = titleElem.textContent) ||
+			(titleText = titleElem.content)
+		)
+	) {
+		return titleText;
+	} else {
+		return null;
 	}
 }
 

@@ -33,3 +33,5 @@ function shutdown(){
 const Client = require("./lib/client");
 const client = new Client(config);
 client.connect();
+
+module.exports = client;
