@@ -1,18 +1,33 @@
 var Plugin = require("../lib/plugin.js");
 
 function payload(src, msg, type){
-  if(type === "steam"){
-    this.getIrcUsers().then(users => {
-      users.forEach(user => {
-        this.steam.friends.sendMessage(src, ircUserToString(user));
+  msg = msg.slice("!userlist ".length);
+  if(msg.match(/-v/)){
+    if(type === "steam"){
+      this.getIrcUsers(true).then(users => {
+        users.forEach(user => {
+          this.steam.friends.sendMessage(src, ircUserToString(user));
+        })
       })
-    })
-  }else if(type === "irc"){
-    this.getSteamUsers().then(users => {
-      users.forEach(user => {
-        this.irc.say(src, steamUsertoString.call(this, user));
-      })
-    })
+    }else if(type === "irc"){
+      this.getSteamUsers().then(users => {
+        users.forEach(user => {
+          this.irc.say(src, steamUsertoString.call(this, user));
+        });
+      });
+    }
+  }else{
+    if(type === "steam"){
+      this.getIrcUsers(false).then(users => {
+        this.steam.friends.sendMessage(src, `Users in ${this.channel}:\n${users.join("\n")}`);
+      });
+    }else if(type === "irc"){
+      this.getSteamUsers().then(users => {
+        users.forEach(user => {
+          this.irc.say(src, steamUsertoString.call(this, user));
+        });
+      });
+    }
   }
 }
 
