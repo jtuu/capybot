@@ -2,7 +2,7 @@ const Plugin = require("../lib/plugin.js");
 
 const diceRegex = /(\d+)d(\d+)([+-]\d+)?/;
 
-const absMax = 10000;
+const absMax = 100000000;
 
 function payload(src, msg, type) {
 	var [_, diceCount, faceCount, modifier] = msg.slice(6).match(diceRegex);
