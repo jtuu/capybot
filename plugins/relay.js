@@ -2,7 +2,8 @@ const Plugin = require("../lib/plugin.js");
 const {
 	defaultReason,
 	noopFn,
-	newlineRegex
+	newlineRegex,
+	formatIrcUser
 } = require("../lib/utils").misc;
 const Steam = require("steam");
 
@@ -34,25 +35,21 @@ function decorateNick(nick, color) {
 	return `<${nick}>`;
 }
 
-function formatUser(raw) {
-	return `${raw.nick} [${raw.user}@${raw.host}]`;
-}
-
 function colorNick(nick) {
 	let color = colors[nick.split("").reduce((p, c) => String(p.charCodeAt(0) + c.charCodeAt(0)), "\x00") % colors.length];
 	return colorChar + color + nick + endChar;
 }
 
 var relayOnJoin = function(channel, nick, raw) {
-	this.sayTo("steam", `${formatUser(raw)} has joined ${channel}`)
+	this.sayTo("steam", `${formatIrcUser(raw)} has joined ${channel}`)
 };
 
 var relayOnQuit = function(nick, reason = defaultReason, channels, raw) {
-	this.sayTo("steam", `${formatUser(raw)} has quit [${reason}]`)
+	this.sayTo("steam", `${formatIrcUser(raw)} has quit [${reason}]`)
 };
 
 var relayOnPart = function(channel, nick, reason = defaultReason, raw) {
-	this.sayTo("steam", `${formatUser(raw)} has left ${channel} [${reason}]`)
+	this.sayTo("steam", `${formatIrcUser(raw)} has left ${channel} [${reason}]`)
 };
 
 var relayOnKick = function(channel, nick, by, reason = defaultReason, raw) {

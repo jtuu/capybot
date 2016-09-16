@@ -35,3 +35,26 @@ const client = new Client(config);
 client.connect();
 
 module.exports = client;
+
+
+//graceful exit
+process.on("uncaughException", err => {
+	client.sayToBoth("Crashing... (uncaughException)");
+	console.log(e);
+	setTimeout(() => process.exit(99), 2000);
+});
+
+process.on("SIGINT", () => {
+	client.sayToBoth("Exiting... (SIGINT)");
+	setTimeout(() => process.exit(2), 2000);
+});
+
+process.on("SIGTERM", () => {
+	client.sayToBoth("Exiting... (SIGTERM)");
+	setTimeout(() => process.exit(2), 2000);
+});
+
+process.on("SIGHUP", () => {
+	client.sayToBoth("Exiting... (SIGHUP)");
+	setTimeout(() => process.exit(2), 2000);
+});
