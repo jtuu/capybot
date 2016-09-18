@@ -6,7 +6,7 @@ const {
 
 function payload(src, msg, type) {
 	return new Promise((resolve, reject) => {
-		const fortune = spawn("fortune", ["-a", "-s"]);
+		const fortune = spawn("fortune", ["-s", "/usr/share/games/fortunes/fortunes"]);
 
 		fortune.stdout.setEncoding("utf8");
     fortune.stderr.setEncoding("utf8");
