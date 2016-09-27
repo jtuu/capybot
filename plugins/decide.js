@@ -1,7 +1,7 @@
 const Plugin = require("../lib/plugin");
 
 const delim = "or";
-const trigger = new RegExp(`^!decide\\s(?!.*${delim}\\s${delim}).+?\\s${delim}\\s(?!.*\\s${delim}).+`);
+const trigger = new RegExp(`^!decide\\s(?!.*\\s${delim}\\s${delim}).+?\\s${delim}\\s(?!.*\\s${delim}).+`);
 
 const flavorful = false;
 
