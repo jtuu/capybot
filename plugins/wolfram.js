@@ -6,7 +6,7 @@ const {querify, newlineRegex} = require("../lib/utils").misc;
 const baseUrl = "http://api.wolframalpha.com/v2/query";
 
 function payload(src, msg, type) {
-  msg = msg.slice(4);
+  msg = msg.replace(/^!(?:wa|wolfram)/, "").slice(1);
   return new Promise((resolve, reject) => {
     if(!msg){
       return reject(new Plugin.Response("invalid message"));
