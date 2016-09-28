@@ -24,12 +24,19 @@ function payload(src, msg, type) {
         pod[title='Result'] > subpod > plaintext,
         pod[title='Name'] > subpod > plaintext,
         pod[title='Basic Information'] > subpod > plaintext,
-        pod[title^='Weather forecast'] > subpod > plaintext
+        pod[title^='Weather forecast'] > subpod > plaintext,
+        pod[title='Response'] > subpod > plaintext,
+        pod:last-of-type > subpod > plaintext
       `);
       if(resultEl){
-        resolve(new Plugin.Response(resultEl.textContent.replace(newlineRegex, " ")))
+        resolve(new Plugin.Response(resultEl.textContent.replace(newlineRegex, " ")));
       }else{
-        resolve(new Plugin.Response("¯\\_(ツ)_/¯"));
+        let didYouMeanEl = win.document.querySelector("didyoumeans > didyoumean");
+        if(didYouMeanEl){
+          resolve(new Plugin.Response(`Did you mean: "${didYouMeanEl.textContent.replace(newlineRegex, " ") }"?`));
+        }else{
+          resolve(new Plugin.Response("¯\\_(ツ)_/¯"));
+        }
       }
       win.close();
     })
