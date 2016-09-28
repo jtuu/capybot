@@ -14,13 +14,17 @@ function payload(src, msg, type) {
     const params = {
       appid: wa.config.appid,
       input: msg,
-      format: "plaintext"
+      format: "plaintext",
+      parsetimeout: 30,
+      podtimeout: 30,
+      scantimeout: 30
     };
     const req = jsdom.env(`${baseUrl}${querify(params)}`, (err, win) => {
       let resultEl = win.document.querySelector(`
         pod[title='Result'] > subpod > plaintext,
         pod[title='Name'] > subpod > plaintext,
-        pod[title='Basic Information'] > subpod > plaintext
+        pod[title='Basic Information'] > subpod > plaintext,
+        pod[title^='Weather forecast'] > subpod > plaintext
       `);
       if(resultEl){
         resolve(new Plugin.Response(resultEl.textContent.replace(newlineRegex, " ")))
@@ -33,7 +37,7 @@ function payload(src, msg, type) {
 }
 
 const desc = "Query Wolfram Alpha.";
-const wa = new Plugin("wolfram", /^!wa/, payload, desc, 5, true, false, true);
+const wa = new Plugin("wolfram", /^!(?:wa|wolfram)/, payload, desc, 5, true, false, true);
 wa.loadConfig();
 
 module.exports = wa;
