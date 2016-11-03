@@ -32,8 +32,12 @@ function cache(url, title) {
 }
 
 function encodeUrl(url) {
-	if (url === decodeURI(url)) {
-		url = encodeURI(url);
+	try {
+		if (url === decodeURI(url)) {
+			url = encodeURI(url);
+		}
+	} catch (ex) {
+		console.error(ex);
 	}
 	return url;
 }
