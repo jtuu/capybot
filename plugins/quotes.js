@@ -9,7 +9,7 @@ try {
 	console.warn("Could not load quotes-config.json. Using default config.");
 }
 
-var client = require("../client.js");
+var client = require("../index.js");
 
 var pool = new pg.Pool(config);
 
