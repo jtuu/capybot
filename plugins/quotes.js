@@ -15,14 +15,16 @@ var randomQuoteQuery = `
 with x as (
   select * from ${config.table}
     where message ~* $1
-		and msgtype = 'message'
-		and message !~ '(^|: )!\\w+'
+                and msgtype = 'message'
+                and message !~ '(^|: )!\\w+'
+                and (channel = '#edfpso2' or channel = '103582791433320488')
 )
 select x.username, x.message from x
   offset
     floor(random() * (select count(*) from x))
   limit 1
 `;
+
 
 const ignoreBots = true;
 const botNames = [/escbot/];

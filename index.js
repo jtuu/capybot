@@ -36,6 +36,7 @@ client.connect();
 
 module.exports = client;
 
+var b = client.irc.say.bind(client.irc, "&bitlbee");
 
 //graceful exit
 process.on("uncaughException", err => {

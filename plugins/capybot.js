@@ -14,6 +14,8 @@ const headers = {
 	"user-agent": `NodeJS; jtuu/capybot;`
 };
 
+const client = require("../index.js");
+
 const headUrl = url.parse(`https://api.github.com/repos/${user}/${repo}/git/refs/heads/${branch}`);
 
 function payload(src, msg, type) {
@@ -54,7 +56,7 @@ function payload(src, msg, type) {
 
 							const commitMsg = parsedBody.message.replace(newlineRegex, " ").trim();
 
-							return resolve(new Plugin.Response(`Latest changes to ${repo}: "${commitMsg}". ${repo.charAt(0).toUpperCase() + repo.slice(1)} is made by ${dn}. https://github.com/${user}/${repo}`));
+							return resolve(new Plugin.Response(`Currently loaded plugins: ${client.pluginLoader.pluginNames}.\nLatest changes to ${repo}: "${commitMsg}". ${repo.charAt(0).toUpperCase() + repo.slice(1)} is made by ${dn}. https://github.com/${user}/${repo}`));
 						})
 					})
 					commitReq.on("error", err => {

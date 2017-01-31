@@ -40,3 +40,4 @@ jspm_packages
 # custom
 config/*
 !config/*.default.json
+nohup.out
