@@ -5,7 +5,6 @@ const {
 	noopFn
 } = require("../lib/utils").misc;
 const defaultReason = "";
-const Steam = require("steam");
 
 try{
   let configFile = require("../config/logger-config.json");
@@ -70,42 +69,6 @@ var loggerOnTopic = function(chan, topic, nick, raw) {
   log(nick, topic, chan, "irc", "topic", "", raw.host);
 }
 
-var loggerOnChatMsg = function(src, msg, type, chatter){
-  this.getSteamUser(chatter).then(user => {
-    log(user.player_name, msg, src, "steam", "message", "", chatter);
-  })
-}
-
-var loggerOnChatStateChange = function(state, movingUser, room, actingUser) {
-	this.getSteamUser(movingUser).then(user => {
-		let name = user.player_name;
-
-		switch (state) {
-			case Steam.EChatMemberStateChange.Entered:
-        log(name, "", this.room_id, "steam", "join", "", movingUser);
-				break;
-			case Steam.EChatMemberStateChange.Left:
-        log(name, "", this.room_id, "steam", "part", "", movingUser);
-				break;
-			case Steam.EChatMemberStateChange.Disconnected:
-        log(name, "", this.room_id, "steam", "quit", "", movingUser);
-				break;
-			case Steam.EChatMemberStateChange.Kicked:
-				this.getSteamUser(actingUser).then(user => {
-          log(name, "", this.room_id, "steam", "kick", user.player_name, movingUser);
-				})
-				break;
-			case Steam.EChatMemberStateChange.Banned:
-				this.getSteamUser(actingUser).then(user => {
-          log(name, "ban", this.room_id, "steam", "mode", user.player_name, movingUser);
-				})
-				break;
-			default:
-				console.log("Unexpected chatStateChange: " + state)
-		}
-	})
-};
-
 function payload(src, msg, type){
   if(!logger.init){
     init.call(this);
@@ -125,8 +88,6 @@ function init(){
 	this.irc.removeListener("action", this.loggerOnAction || noopFn);
 	this.irc.removeListener("topic", this.loggerOnTopic || noopFn);
 	this.irc.removeListener("kick" + this.channel, this.loggerOnKick || noopFn);
-  this.steam.friends.removeListener("chatMsg", this.loggerOnChatMsg || noopFn);
-	this.steam.friends.removeListener("chatStateChange", this.loggerOnChatStateChange || noopFn);
 
   this.loggerOnMessage = loggerOnMessage.bind(this);
 	this.loggerOnJoin = loggerOnJoin.bind(this, this.channel);
@@ -138,8 +99,6 @@ function init(){
 	this.loggerOnAction = loggerOnAction.bind(this);
 	this.loggerOnTopic = loggerOnTopic.bind(this);
 	this.loggerOnKick = loggerOnKick.bind(this, this.channel);
-  this.loggerOnChatMsg = loggerOnChatMsg.bind(this);
-	this.loggerOnChatStateChange = loggerOnChatStateChange.bind(this);
 
   this.irc.on("message#", this.loggerOnMessage);
 	this.irc.on("join" + this.channel, this.loggerOnJoin);
@@ -151,8 +110,6 @@ function init(){
 	this.irc.on("action", this.loggerOnAction);
 	this.irc.on("topic", this.loggerOnTopic);
 	this.irc.on("kick" + this.channel, this.loggerOnKick);
-  this.steam.friends.on("chatMsg", this.loggerOnChatMsg);
-	this.steam.friends.on("chatStateChange", this.loggerOnChatStateChange);
 }
 
 const desc = "Logs activity to a database.";
