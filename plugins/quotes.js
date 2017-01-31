@@ -9,6 +9,8 @@ try {
 	console.warn("Could not load quotes-config.json. Using default config.");
 }
 
+var client = require("../client");
+
 var pool = new pg.Pool(config);
 
 var randomQuoteQuery = `
@@ -17,7 +19,7 @@ with x as (
     where message ~* $1
                 and msgtype = 'message'
                 and message !~ '(^|: )!\\w+'
-                and (channel = '#edfpso2' or channel = '103582791433320488')
+                and channel = '${client.channel}'
 )
 select x.username, x.message from x
   offset
