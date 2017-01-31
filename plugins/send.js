@@ -1,7 +1,7 @@
 const Plugin = require("../lib/plugin.js");
 
 function payload(src, msg, type) {
-	const [_, to, thing] = msg.match(/^!send (\S+) (\S+)/) || [];
+	const [_, to, thing] = msg.match(/^!send (\S+) (.+)/) || [];
 
 	if (to && thing) {
 		return new Promise(resolve => {
