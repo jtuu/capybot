@@ -58,10 +58,10 @@ function payload(src, msg, type) {
 
 					if (ignoreBots) {
 						if (!botNames.some(bn => bn.test(username))) {
-							message = username + ": " + message;
+							message = username + " : " + message;
 						}
 					} else {
-						message = username + ": " + message;
+						message = username + " : " + message;
 					}
 				} else {
 					message = "No quotes found";
