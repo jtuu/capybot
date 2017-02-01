@@ -64,11 +64,11 @@ function formatResult(result) {
 	return {
 		irc: result.items.reduce((stack, item, index) => {
 			let title = item.title.trim();
-			return stack += `${bold}${
+			return stack += `${
 				title.length > maxTitleLength
 				? title.substr(0, maxTitleLength - 1).trim() + "…"
 				: title
-			}${bold} : ${item.link}\n`
+			} : ${item.link}\n`
 		}, ""),
 		steam: result.items.reduce((stack, item, index) => {
 			let title = item.title.trim();
