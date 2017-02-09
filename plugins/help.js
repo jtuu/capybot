@@ -1,6 +1,6 @@
 var Plugin = require("../lib/plugin.js");
 
-const message = `https://github.com/jtuu/capybot/blob/master/doc/plugins.md`;
+const message = `https://github.com/jtuu/capybot/blob/discord/doc/plugins.md`;
 
 function payload(src, msg, type) {
 	return new Promise(resolve => {
