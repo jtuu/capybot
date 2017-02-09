@@ -3,25 +3,23 @@
 A document explaining the behaviour of the following built-in plugins:
 
 * [8ball](#8ball)
-* [autoop](#autoop)
 * [capybot](#capybot)
-* [cleverbot](#cleverbot)
 * [decide](#decide)
 * [dice](#dice)
 * [fortune](#fortune)
 * [google](#google)
 * [help](#help)
 * [logger](#logger)
-* [moderate](#moderate)
 * [noop](#noop)
 * [ping](#ping)
 * [quotes](#quotes)
 * [rejoin](#rejoin)
-* [relay](#relay)
+* [remove](#remove)
 * [seen](#seen)
+* [send](#send)
 * [translate](#translate)
-* [urltitle](#urltitle)
-* [userlist](#userlist)
+* [urban](#urban)
+* [wolfram](#wolfram)
 
 ## 8ball
 
@@ -29,16 +27,7 @@ A document explaining the behaviour of the following built-in plugins:
 * **public:** true
 * **private:** false
 
-Responds to a yes or no question,
-
-
-## autoop
-
-* **trigger:** any
-* **public:** true
-* **private:** false
-
-Sets +o for specified users when they join.
+Responds to a yes or no question.
 
 
 ## capybot
@@ -50,18 +39,9 @@ Sets +o for specified users when they join.
 Returns information about the capybot repo on GitHub.
 
 
-## cleverbot
-
-* **trigger:** `/^!cb/`
-* **public:** true
-* **private:** false
-
-Chat with Cleverbot.
-
-
 ## decide
 
-* **trigger:** `/^!decide\s(?!.*or\sor).+?\sor\s(?!.*or).+/`
+* **trigger:** `/^!decide\s(?!.*\sor\sor).+?\sor\s(?!.*\sor).+/`
 * **public:** true
 * **private:** false
 
@@ -113,15 +93,6 @@ Returns a link to this document.
 Logs activity to a database.
 
 
-## moderate
-
-* **trigger:** `/^!(?:(k)(?:ick)?(b)(?:an)?|(k)(?:ick)?|(b)(?:an)?|(u)(?:n)?(b)(?:an)?|(o)(?:p|per)?)\b/`
-* **public:** true
-* **private:** false
-
-Kick or ban users.
-
-
 ## noop
 
 * **trigger:** `/$./`
@@ -158,13 +129,13 @@ Returns a random message from a database (Postgres). Can take in a regex pattern
 Makes the bot leave and rejoin Steam chat.
 
 
-## relay
+## remove
 
-* **trigger:** any
+* **trigger:** `/^!remove/`
 * **public:** true
 * **private:** false
 
-Relays messages and actions (joins, parts, quits, kicks, bans etc.) between IRC and Steam.
+Removed
 
 
 ## seen
@@ -176,6 +147,15 @@ Relays messages and actions (joins, parts, quits, kicks, bans etc.) between IRC 
 Returns the date a user was last seen.
 
 
+## send
+
+* **trigger:** `/^!send/`
+* **public:** true
+* **private:** false
+
+Sent ;)
+
+
 ## translate
 
 * **trigger:** `/^!translate/`
@@ -185,19 +165,19 @@ Returns the date a user was last seen.
 Google Translate
 
 
-## urltitle
+## urban
 
-* **trigger:** `/(http(s)?:\/\/\S+)/`
+* **trigger:** `/^!ud/`
 * **public:** true
 * **private:** false
 
-Fetches the title of websites.
+Search for a definition in Urban Dictionary.
 
 
-## userlist
+## wolfram
 
-* **trigger:** `/^!userlist/`
+* **trigger:** `/^!(?:wa|wolfram)/`
 * **public:** true
-* **private:** true
+* **private:** false
 
-Makes the bot whisper you with a list of all the users that are on the other side of the chat.
+Query Wolfram Alpha.
