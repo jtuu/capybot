@@ -29,7 +29,7 @@ select x.username, x.message from x
 
 
 const ignoreBots = true;
-const botNames = [/escbot/];
+const botNames = config.botNames.map(name => new RegExp(name));
 
 function payload(src, msg, type) {
 	let searchString = msg.replace(/^!quote\s?/, "");

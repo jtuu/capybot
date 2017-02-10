@@ -6,5 +6,6 @@
   "table": "quotes",
   "port": 5432,
   "max": 3,
-  "idleTimeoutMillis": 30000
+  "idleTimeoutMillis": 30000,
+  "botNames": []
 }
