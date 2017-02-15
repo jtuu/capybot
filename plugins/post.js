@@ -26,7 +26,7 @@ app.post("/capybot/api/message", bodyParser.json(), (req, res) => {
 	if(!req.body.content){
 		return res.status(400).send();
 	}
-	client.sayToBoth(req.body.content);
+	client.irc.say(client.channel, req.body.content);
 	res.status(200).send();
 })
 
