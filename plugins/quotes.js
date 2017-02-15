@@ -55,6 +55,7 @@ function payload(src, msg, type) {
 						message
 					} = result.rows[0];
 
+					message = username + ": " + message;
 				} else {
 					message = "No quotes found";
 				}
