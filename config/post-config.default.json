@@ -1,0 +1,8 @@
+{
+  "secure": true,
+  "key": "/path/to/private.key",
+  "cert": "/path/to/cert.crt",
+  "secret": "mysecret123",
+  "supersecret": "topsecret",
+  "port": 1234
+}
