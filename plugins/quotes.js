@@ -20,6 +20,7 @@ with x as (
                 and msgtype = 'message'
                 and message !~ '(^|: )!\\w+'
                 and channel = '${client.channel}'
+								and username <> all (array['${config.botNames.join(`','`)}'])
 )
 select x.username, x.message from x
   offset
@@ -27,8 +28,6 @@ select x.username, x.message from x
   limit 1
 `;
 
-
-const ignoreBots = true;
 const botNames = config.botNames.map(name => new RegExp(name, "i"));
 
 function payload(src, msg, type) {
@@ -56,13 +55,6 @@ function payload(src, msg, type) {
 						message
 					} = result.rows[0];
 
-					if (ignoreBots) {
-						if (!botNames.some(bn => bn.test(username))) {
-							message = username + " : " + message;
-						}
-					} else {
-						message = username + " : " + message;
-					}
 				} else {
 					message = "No quotes found";
 				}
